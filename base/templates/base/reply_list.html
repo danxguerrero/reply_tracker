@@ -1,0 +1,58 @@
+{% extends 'base/main.html' %}
+
+{% block content %}
+
+<div class="header-bar">
+    <div>
+        <h1>Hello, {{request.user|title}}</h1>
+        <h3>Today's Reply Count:</h3>
+    </div>
+    {% if request.user.is_authenticated %}
+    <a href="{% url 'logout' %}">Logout</a>
+{% else %}
+    <a href="{% url 'login' %}">Login</a>
+{% endif %}
+</div>
+
+<div id="search-add-wrapper">
+    <form method="GET" style="margin-top:20px; display:flex;">
+        <input type="text" name="search-area" value="{{search_input}}">
+        <input class="button" type="submit" value="Search">
+    </form>
+    <a id="add-link" href="{% url 'reply-create' %}">&#x2b;</a>
+</div>
+
+<div class="reply-list-wrapper">
+    {% for ticket in replies %}
+        <div class="reply-wrapper">
+            <div class="ticket-ticket">
+                <!-- <p>{{today}}</p>
+                <p>{{ticket.created}}</p> -->
+                <a href="{% url 'reply-update' ticket.id %}">{{ticket.ticket}}</a>
+                <p class="note">{{ticket.note}}</p>
+            </div>
+            <a class="delete-link" href="{% url 'reply-delete' ticket.id %}">&#215;</a>
+        </div>
+    {% empty %}
+        <h3>No Replies</h3>
+    {% endfor %}
+   
+</div>
+
+<!-- <table>
+    <tr>
+        <th>Tickets</th>
+        <th>Note</th>
+    </tr>
+    {% for ticket in replies %}
+        <tr>
+            <td>{{ticket.ticket}}</td>
+            <td>{{ticket.note}}</td>
+            <td><a href="{% url 'reply-update' ticket.id %}">Edit</a></td>
+            <td><a href="{% url 'reply-delete' ticket.id %}">Delete</a></td>
+        </tr>
+    {% empty %}
+        <h3>No Tickets in List</h3>
+    {% endfor %}
+</table> -->
+{% endblock %}
