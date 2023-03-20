@@ -11,7 +11,7 @@ from django.contrib.auth import login
 
 from .models import Reply
 
-from datetime import datetime
+from datetime import date
 # Create your views here.
 
 class CustomLoginView(LoginView):
@@ -46,17 +46,17 @@ class ReplyList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['replies'] = context['replies'].filter(user=self.request.user)
+        context['replies'] = context['replies'].filter(created__icontains=date.today())
+        context['count'] = context['replies'].count()
         
-        # context['count'] = context['replies'].filter(created=datetime.now().date()).count()
-        
-        
-
         
 
-        search_input = self.request.GET.get('search-area') or ''
+        
+
+        search_input = self.request.GET.get('search-area')
         if search_input:
-            context['replies'] = context['replies'].filter(note__icontains=search_input)
-            context['search-input'] = search_input
+            context['replies'] = context['replies'].filter(created__icontains=search_input)
+            context['count'] = context['replies'].count()
         return context 
     
 

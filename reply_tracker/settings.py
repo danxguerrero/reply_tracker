@@ -114,6 +114,8 @@ USE_TZ = True
 
 LOGIN_URL = 'login'
 
+TIME_ZONE = 'America/New_York'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
